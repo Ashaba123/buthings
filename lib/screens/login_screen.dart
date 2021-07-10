@@ -18,12 +18,12 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: 40),
               Text(
                 "LOGIN",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: 20),
               Image.asset(
                 "assets/icons/login.png",
                 height: size.height * 0.37,
@@ -53,6 +53,7 @@ class LoginScreen extends StatelessWidget {
                   );
                 },
               ),
+              SizedBox(height: 40),
             ],
           ),
         ),

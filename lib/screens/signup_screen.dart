@@ -19,12 +19,12 @@ class SignUpScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: 40),
               Text(
                 "SIGN UP",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: 20),
               Image.asset(
                 "assets/icons/signup.png",
                 height: size.height * 0.35,
@@ -81,7 +81,8 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 40),
             ],
           ),
         ),
