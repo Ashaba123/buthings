@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shabdee.buthings_app">
+    package="com.shabdee.buthings">
    <application
-        android:label="buthings_app"
+        android:label="buthings"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
