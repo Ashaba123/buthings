@@ -72,6 +72,9 @@ class SignUpScreen extends StatelessWidget {
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Registering...')));
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('Error')));
                     }
                   },
                 ),

@@ -1,3 +1,4 @@
+import 'package:buthings/constants.dart';
 import 'package:buthings/screens/home.dart';
 import 'package:buthings/screens/login_screen.dart';
 import 'package:buthings/screens/signup_screen.dart';
@@ -23,6 +24,8 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Bu Things',
         theme: ThemeData(
+          textTheme:
+              Theme.of(context).textTheme.apply(bodyColor: kPrimaryColor),
           primarySwatch: Colors.purple,
         ),
         home: AuthenticationChecker(),
