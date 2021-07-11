@@ -7,18 +7,24 @@ class RoundedInputField extends StatelessWidget {
   final String? Function(String?)? validator;
   final IconData? icon;
   final TextEditingController? controller;
+  final int? maxlines;
+  final TextInputType? keyboardType;
   const RoundedInputField({
     Key? key,
     this.hintText,
     this.icon = Icons.person,
     this.controller,
     this.validator,
+    this.maxlines,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        keyboardType: keyboardType,
+        maxLines: maxlines,
         validator: validator,
         controller: controller,
         cursorColor: kPrimaryColor,

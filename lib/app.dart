@@ -24,8 +24,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Bu Things',
         theme: ThemeData(
-          textTheme:
-              Theme.of(context).textTheme.apply(bodyColor: kPrimaryColor),
+          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
           primarySwatch: Colors.purple,
         ),
         home: AuthenticationChecker(),
