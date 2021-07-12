@@ -21,19 +21,16 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: kDefaultPadding),
               child: Center(
                 child: Text(
-                  "For The Love Of...",
-                  style: TextStyle(
+                  "Bu Things",
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
                       color: kPrimaryColor,
-                      fontFamily: "Montserrat",
-                      fontStyle: FontStyle.italic),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Montserrat"),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child: Divider(
-                color: Colors.purple[500],
-              ),
             ),
             Expanded(
               child: Padding(
@@ -96,11 +93,11 @@ class AppBarTitle extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Text(
-        "Bu Things",
-        style: Theme.of(context).textTheme.headline6!.copyWith(
+        "For The Love Of...",
+        style: TextStyle(
             color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Montserrat"),
+            fontFamily: "Montserrat",
+            fontStyle: FontStyle.italic),
       ),
     );
   }

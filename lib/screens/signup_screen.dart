@@ -62,7 +62,7 @@ class SignUpScreen extends StatelessWidget {
                       context.read<IAuthenicationService>().signUp(
                           email: emailController.text,
                           password: passwordController.text);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
@@ -70,11 +70,9 @@ class SignUpScreen extends StatelessWidget {
                           },
                         ),
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Registering...')));
                     } else {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('Error')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error! Try Again')));
                     }
                   },
                 ),

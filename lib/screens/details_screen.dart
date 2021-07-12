@@ -7,6 +7,7 @@ import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
 import 'package:buthings/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Product? product;
@@ -99,10 +100,44 @@ class DetailsScreen extends StatelessWidget {
   }
 }
 
-class CounterWithFavButton extends StatelessWidget {
-  const CounterWithFavButton({
-    Key? key,
-  }) : super(key: key);
+class CounterWithFavButton extends StatefulWidget {
+  // actual store listing review & rating
+  @override
+  _CounterWithFavButtonState createState() => _CounterWithFavButtonState();
+}
+
+class _CounterWithFavButtonState extends State<CounterWithFavButton> {
+  void _showRatingDialog() {
+    final _dialog = RatingDialog(
+      // your app's name?
+      title: 'Bu Things',
+      // encourage your user to leave a high rating?
+      message:
+          'Tap a star to set your rating. Add more description here if you want.',
+      // your app's logo?
+      image: Image.asset("assets/images/logo.png"),
+      submitButton: 'Submit',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, comment: ${response.comment}');
+        // TODO: add your own logic
+        if (response.rating < 3.0) {
+          // send their comments to your email or anywhere you wish
+          // ask the user to contact you instead of leaving a bad review
+          print('Store rating of product to firebase');
+        } else {
+          print('Store rating of product to firebase');
+        }
+      },
+    );
+
+    //show dialog
+    showDialog(
+      context: context,
+      barrierDismissible: true, // set to false if you want to force a rating
+      builder: (context) => _dialog,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,12 +145,16 @@ class CounterWithFavButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CartCounter(),
-        Container(
-          padding: EdgeInsets.all(8.0),
-          height: 32,
-          width: 32,
-          decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-          child: Image.asset("assets/icons/heart.png"),
+        GestureDetector(
+          onTap: _showRatingDialog,
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            height: 32,
+            width: 32,
+            decoration:
+                BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            child: Image.asset("assets/icons/heart.png"),
+          ),
         )
       ],
     );
