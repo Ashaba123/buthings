@@ -115,7 +115,11 @@ class _CounterWithFavButtonState extends State<CounterWithFavButton> {
       message:
           'Tap a star to set your rating. Add more description here if you want.',
       // your app's logo?
-      image: Image.asset("assets/images/logo.png"),
+      image: Image.asset(
+        "assets/images/logo.png",
+        height: 100,
+        width: 100,
+      ),
       submitButton: 'Submit',
       onCancelled: () => print('cancelled'),
       onSubmitted: (response) {
