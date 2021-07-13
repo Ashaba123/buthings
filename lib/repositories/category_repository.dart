@@ -8,8 +8,7 @@ abstract class ICategoryRepository {
 
 class CategoryRepository extends ICategoryRepository {
   @override
-  void getAllCategories() {
-  }
+  void getAllCategories() {}
 
   @override
   createCategory(int id) {

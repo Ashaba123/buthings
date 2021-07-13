@@ -8,31 +8,25 @@ abstract class IProductRepository {
 
 class ProductRepository extends IProductRepository {
   @override
-  void getAllProducts() {
-
-  }
+  void getAllProducts() {}
 
   @override
   createProduct(int id) {
-
     throw UnimplementedError();
   }
 
   @override
   deleteProduct(int id) {
-
     throw UnimplementedError();
   }
 
   @override
   getProduct(int id) {
-
     throw UnimplementedError();
   }
 
   @override
   updateProduct(int id) {
-
     throw UnimplementedError();
   }
 }

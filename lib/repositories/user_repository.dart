@@ -8,18 +8,15 @@ abstract class IUserRepository {
 
 class UserRepository extends IUserRepository {
   @override
-  void getAllUsers() {
-  }
+  void getAllUsers() {}
 
   @override
   createUser(int id) {
-
     throw UnimplementedError();
   }
 
   @override
   deleteUser(int id) {
-
     throw UnimplementedError();
   }
 
@@ -30,7 +27,6 @@ class UserRepository extends IUserRepository {
 
   @override
   updateUser(int id) {
-
     throw UnimplementedError();
   }
 }
