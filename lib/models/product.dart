@@ -13,6 +13,25 @@ class Product {
     this.id,
     this.color,
   });
+
+  Product.fromJson(Map<String, Object?> json)
+      : this(
+          id: json['id']! as int,
+          title: json['title']! as String,
+          description: json['description']! as String,
+          color: json['color']! as Color,
+          price: json['price']! as int,
+        );
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'color': color,
+      'price': price,
+    };
+  }
 }
 
 List<Product> products = [

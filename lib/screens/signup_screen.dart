@@ -59,7 +59,7 @@ class SignUpScreen extends StatelessWidget {
                   text: "SIGNUP",
                   press: () {
                     if (formkey.currentState!.validate()) {
-                      context.read<IAuthenicationService>().signUp(
+                      context.read<IAuthenticationService>().signUp(
                           email: emailController.text,
                           password: passwordController.text);
                       Navigator.pushReplacement(

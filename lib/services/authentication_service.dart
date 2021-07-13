@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-abstract class IAuthenicationService {
+abstract class IAuthenticationService {
   Future<String?> signIn({String? email, String? password});
   Future<String?> signUp({String? email, String? password});
   Stream<User?> get authStateChanges;
-  User? curentUser();
+  User? currentUser();
 }
 
-class AuthenticationService extends IAuthenicationService {
+class AuthenticationService extends IAuthenticationService {
   final FirebaseAuth _firebaseAuth;
   AuthenticationService(this._firebaseAuth);
 
@@ -34,7 +33,7 @@ class AuthenticationService extends IAuthenicationService {
     }
   }
 
-  User? curentUser() {
+  User? currentUser() {
     return _firebaseAuth.currentUser;
   }
 }

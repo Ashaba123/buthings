@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                   text: "LOGIN",
                   press: () {
                     if (formkey.currentState!.validate()) {
-                      context.read<IAuthenicationService>().signIn(
+                      context.read<IAuthenticationService>().signIn(
                           email: emailController.text,
                           password: passwordController.text);
                       Navigator.pushReplacement(
