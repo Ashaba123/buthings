@@ -4,6 +4,9 @@ import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/rounded_password_field.dart';
 import 'package:buthings/components/signup_background.dart';
 import 'package:buthings/constants.dart';
+import 'package:buthings/models/user.dart';
+import 'package:buthings/repositories/user_repository.dart';
+import 'package:buthings/role_checker.dart';
 import 'package:buthings/screens/home.dart';
 import 'package:buthings/screens/login_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
@@ -40,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
                   hintText: "Your Email",
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Invalid Email";
+                      return "Enter your Email";
                     }
                     return null;
                   },
@@ -50,7 +53,7 @@ class SignUpScreen extends StatelessWidget {
                   controller: passwordController,
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Invalid Password";
+                      return "Enter your Password";
                     }
                     return null;
                   },

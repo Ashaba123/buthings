@@ -84,8 +84,12 @@ class _AddToCartState extends State<AddToCart> {
                   backgroundColor:
                       MaterialStateProperty.all(widget.product!.color)),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CartScreen(
+                              product: widget.product,
+                            )));
               },
               child: Text(
                 "BUY NOW",

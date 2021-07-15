@@ -1,24 +1,16 @@
-class User {
-  int? id;
+class MyUser {
+  String? id;
   String? email;
-  String? password;
   String? role;
   String? phone;
   String? address;
 
-  User(
-      {this.id,
-      this.email,
-      this.password,
-      this.role,
-      this.phone,
-      this.address});
+  MyUser({this.id, this.email, this.role, this.phone, this.address});
 
-  User.fromJson(Map<String, Object?> json)
+  MyUser.fromJson(Map<String, Object?> json)
       : this(
-          id: json['id']! as int,
+          id: json['id']! as String,
           email: json['email']! as String,
-          password: json['password']! as String,
           role: json['role']! as String,
           phone: json['phone']! as String,
           address: json['address']! as String,
@@ -28,7 +20,6 @@ class User {
     return {
       'id': id,
       'email': email,
-      'password': password,
       'role': role,
       'phone': phone,
       'address': address,

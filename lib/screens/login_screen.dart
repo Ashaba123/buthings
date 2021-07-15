@@ -1,9 +1,9 @@
+import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/components/already_have_account_check.dart';
 import 'package:buthings/components/login_background.dart';
 import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/rounded_password_field.dart';
-import 'package:buthings/screens/home.dart';
 import 'package:buthings/screens/signup_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class LoginScreen extends StatelessWidget {
                 RoundedInputField(
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Invalid Email";
+                      return "Enter your Email";
                     }
                     return null;
                   },
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                 RoundedPasswordField(
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Invalid Password";
+                      return "Enter your Password";
                     }
                     return null;
                   },
@@ -59,20 +59,20 @@ class LoginScreen extends StatelessWidget {
                   text: "LOGIN",
                   press: () {
                     if (formkey.currentState!.validate()) {
-                      context.read<IAuthenticationService>().signIn(
+                  context.read<IAuthenticationService>().signIn(
                           email: emailController.text,
                           password: passwordController.text);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return HomeScreen();
+                            return AuthenticationChecker();
                           },
                         ),
                       );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error, Try Again')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Invalid Credentials, Try Again')));
                     }
                   },
                 ),

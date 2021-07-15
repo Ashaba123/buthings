@@ -1,8 +1,9 @@
 import 'package:buthings/constants.dart';
-import 'package:buthings/provider/authentication_checker.dart';
+import 'package:buthings/authentication_checker.dart';
+import 'package:buthings/provider/user_provider.dart';
+import 'package:buthings/repositories/order_repository.dart';
+import 'package:buthings/repositories/user_repository.dart';
 import 'package:buthings/services/authentication_service.dart';
-import 'package:buthings/services/database_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +16,16 @@ class App extends StatelessWidget {
         Provider<IAuthenticationService>(
           create: (_) => AuthenticationService(FirebaseAuth.instance),
         ),
+        ChangeNotifierProvider<UserProvider>(
+          create: (context) => UserProvider(),
+        ),
+        Provider<IOrderRepository>(
+          create: (context) => OrderRepository(),
+        ),
         StreamProvider(
             create: (context) =>
                 context.read<IAuthenticationService>().authStateChanges,
             initialData: null),
-        Provider<IDatabaseService>(
-          create: (_) => DatabaseService(FirebaseFirestore.instance),
-        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,10 +35,6 @@ class App extends StatelessWidget {
           primarySwatch: Colors.purple,
         ),
         home: AuthenticationChecker(),
-        initialRoute: "/splash",
-        routes: <String, Widget Function(BuildContext context)>{
-          "/splash": (context) => AuthenticationChecker(),
-        },
       ),
     );
   }

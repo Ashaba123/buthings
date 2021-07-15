@@ -1,10 +1,12 @@
 import 'package:buthings/components/item_card.dart';
 import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
-import 'package:buthings/screens/cart_screen.dart';
+import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/screens/details_screen.dart';
+import 'package:buthings/services/authentication_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -70,12 +72,16 @@ class HomeScreen extends StatelessWidget {
       title: AppBarTitle(),
       actions: [
         IconButton(
+            tooltip: "Sign Out",
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CartScreen()));
+              context.read<IAuthenticationService>().signOut();
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AuthenticationChecker()));
             },
             icon: Icon(
-              Icons.shopping_cart,
+              Icons.logout,
               color: kPrimaryColor,
             )),
       ],

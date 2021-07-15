@@ -2,11 +2,14 @@ import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/signup_background.dart';
 import 'package:buthings/constants.dart';
+import 'package:buthings/models/product.dart';
 import 'package:buthings/screens/thank_you_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  final Product? product;
+  const CartScreen({Key? key, @required this.product}) : super(key: key);
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -16,6 +19,7 @@ class _CartScreenState extends State<CartScreen> {
   final phoneController = TextEditingController();
   final addressController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  var uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,7 @@ class _CartScreenState extends State<CartScreen> {
                   icon: Icons.phone,
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Invalid phone";
+                      return "Enter phone number";
                     }
                     return null;
                   },
@@ -69,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
                   icon: Icons.pin_drop,
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Invalid Address";
+                      return "Enter your Address";
                     }
                     return null;
                   },
@@ -80,6 +84,8 @@ class _CartScreenState extends State<CartScreen> {
                   text: "CHECKOUT",
                   press: () {
                     if (formKey.currentState!.validate()) {
+                      //create order
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(

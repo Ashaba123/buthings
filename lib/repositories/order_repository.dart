@@ -1,37 +1,37 @@
+import 'package:buthings/models/order.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 abstract class IOrderRepository {
-  void getAllOrders();
-  getOrder(int id);
-  createOrder(int id);
-  updateOrder(int id);
-  deleteOrder(int id);
+  Stream<List<Order>> getAllOrders();
+  Future createOrder(Order? order);
+  Future updateOrder(Order order);
+  Future deleteOrder(Order order);
 }
 
 class OrderRepository extends IOrderRepository {
+  FirebaseFirestore _db = FirebaseFirestore.instance;
+
   @override
-  void getAllOrders() {
+  Stream<List<Order>> getAllOrders() {
+    return _db.collection("orders").snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Order.fromJson(doc.data())).toList());
   }
 
   @override
-  createOrder(int id) {
+  Future createOrder(Order? order) async {
+    return await _db
+        .collection("orders")
+        .doc(order!.id.toString())
+        .set(order.toJson());
+  }
 
+  @override
+  Future deleteOrder(Order order) {
     throw UnimplementedError();
   }
 
   @override
-  deleteOrder(int id) {
-
-    throw UnimplementedError();
-  }
-
-  @override
-  getOrder(int id) {
-
-    throw UnimplementedError();
-  }
-
-  @override
-  updateOrder(int id) {
-
+  Future updateOrder(Order order) {
     throw UnimplementedError();
   }
 }

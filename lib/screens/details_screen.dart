@@ -88,8 +88,12 @@ class DetailsScreen extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CartScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CartScreen(
+                            product: product,
+                          )));
             },
             icon: Icon(Icons.shopping_cart)),
         SizedBox(
