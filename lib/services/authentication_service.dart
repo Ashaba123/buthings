@@ -3,7 +3,7 @@ import 'package:buthings/repositories/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthenticationService {
-  Future<String?> signIn({String? email, String? password});
+  Future<User?> signIn({String? email, String? password});
   Future<String?> signUp({String? email, String? password});
   void signOut();
   Stream<User?> get authStateChanges;
@@ -31,13 +31,13 @@ class AuthenticationService extends IAuthenticationService {
         : null;
   }
 
-  Future<String?> signIn({String? email, String? password}) async {
+  Future<User?> signIn({String? email, String? password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      final cred = await _firebaseAuth.signInWithEmailAndPassword(
           email: email!, password: password!);
-      return "Signed In";
+      return cred.user;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      print(e.code);
     }
   }
 

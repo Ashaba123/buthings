@@ -7,26 +7,11 @@ import 'package:provider/provider.dart';
 class AuthenticationChecker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final users = context.read<IAuthenticationService>().authStateChanges;
-    return StreamBuilder<dynamic>(
-        stream: users,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            print(snapshot.error);
-          }
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.connectionState == ConnectionState.none) {
-            return Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (snapshot.data != null) {
-            return RoleChecker(
-              user: snapshot.data,
-            );
-          } else {
-            return LoginScreen();
-          }
-        });
+    final user = context.read<IAuthenticationService>().currentUser();
+    if (user == null) {
+      return LoginScreen();
+    } else {
+      return RoleChecker(user: user);
+    }
   }
 }

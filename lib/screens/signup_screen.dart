@@ -45,6 +45,9 @@ class SignUpScreen extends StatelessWidget {
                     if (val!.isEmpty) {
                       return "Enter your Email";
                     }
+                    if (emailValid(val)) {
+                      return "Enter a valid  Email";
+                    }
                     return null;
                   },
                   controller: emailController,
@@ -128,5 +131,11 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool emailValid(String email) {
+    return RegExp(
+            r"/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/")
+        .hasMatch(email);
   }
 }

@@ -4,8 +4,10 @@ import 'package:buthings/components/login_background.dart';
 import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/rounded_password_field.dart';
+import 'package:buthings/role_checker.dart';
 import 'package:buthings/screens/signup_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +43,9 @@ class LoginScreen extends StatelessWidget {
                     if (val!.isEmpty) {
                       return "Enter your Email";
                     }
+                    if (emailValid(val)) {
+                      return 'Enter a valid email';
+                    }
                     return null;
                   },
                   controller: emailController,
@@ -57,16 +62,18 @@ class LoginScreen extends StatelessWidget {
                 ),
                 RoundedButton(
                   text: "LOGIN",
-                  press: () {
+                  press: () async {
                     if (formkey.currentState!.validate()) {
-                      context.read<IAuthenticationService>().signIn(
-                          email: emailController.text,
-                          password: passwordController.text);
+                      User? user = await context
+                          .read<IAuthenticationService>()
+                          .signIn(
+                              email: emailController.text,
+                              password: passwordController.text);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return AuthenticationChecker();
+                            return RoleChecker(user: user);
                           },
                         ),
                       );
@@ -96,5 +103,11 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool emailValid(String email) {
+    return RegExp(
+            r"/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/")
+        .hasMatch(email);
   }
 }
