@@ -64,13 +64,13 @@ class _AddToCartState extends State<AddToCart> {
           width: 58,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: widget.product!.color!),
+            border: Border.all(color: Colors.purpleAccent),
           ),
           child: IconButton(
             onPressed: _showRatingDialog,
             icon: Icon(
               Icons.thumbs_up_down_outlined,
-              color: widget.product!.color,
+              color: Colors.purpleAccent,
             ),
           ),
         ),
@@ -82,7 +82,7 @@ class _AddToCartState extends State<AddToCart> {
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18))),
                   backgroundColor:
-                      MaterialStateProperty.all(widget.product!.color)),
+                      MaterialStateProperty.all(Colors.purpleAccent)),
               onPressed: () {
                 Navigator.push(
                     context,

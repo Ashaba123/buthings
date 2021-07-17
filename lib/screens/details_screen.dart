@@ -17,7 +17,7 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: product!.color,
+      backgroundColor: Colors.purpleAccent,
       appBar: buildAppBar(context),
       body: SingleChildScrollView(
         child: Column(
@@ -46,7 +46,7 @@ class DetailsScreen extends StatelessWidget {
                         Text("Color"),
                         Row(children: [
                           ColorDot(
-                            color: product!.color,
+                            color: Colors.purpleAccent,
                             isSelected: true,
                           ),
                           ColorDot(
@@ -77,7 +77,7 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: product!.color,
+      backgroundColor: Colors.purpleAccent,
       elevation: 0,
       leading: BackButton(
         color: Colors.white,

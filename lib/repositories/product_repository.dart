@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class IProductRepository {
   Stream<List<Product>> getAllProducts();
-  getProduct(int id);
-  createProduct(int id);
-  updateProduct(int id);
-  deleteProduct(int id);
+  Future getProduct(int id);
+  Future createProduct(String userId, Product? product);
+  Future updateProduct(int id);
+  Future deleteProduct(int id);
 }
 
 class ProductRepository extends IProductRepository {
@@ -19,22 +19,22 @@ class ProductRepository extends IProductRepository {
   }
 
   @override
-  createProduct(int id) {
+  Future createProduct(String userId, Product? product) async {
+    return await _db.collection('products').doc(userId).set(product!.toJson());
+  }
+
+  @override
+  Future deleteProduct(int id) {
     throw UnimplementedError();
   }
 
   @override
-  deleteProduct(int id) {
+  Future getProduct(int id) {
     throw UnimplementedError();
   }
 
   @override
-  getProduct(int id) {
-    throw UnimplementedError();
-  }
-
-  @override
-  updateProduct(int id) {
+  Future updateProduct(int id) {
     throw UnimplementedError();
   }
 }

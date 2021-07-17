@@ -11,7 +11,7 @@ class ProductTitleWithImage extends StatelessWidget {
   }) : super(key: key);
 
   final Product? product;
-  final List<String>? imageList = [];
+  final List<MyImage>? imageList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class ProductTitleWithImage extends StatelessWidget {
                       .map((image) => ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
-                              image,
+                              image.image!,
                               fit: BoxFit.fill,
                               width: double.infinity,
                             ),

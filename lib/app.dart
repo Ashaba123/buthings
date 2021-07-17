@@ -1,5 +1,6 @@
 import 'package:buthings/constants.dart';
 import 'package:buthings/authentication_checker.dart';
+import 'package:buthings/provider/product_provider.dart';
 import 'package:buthings/provider/user_provider.dart';
 import 'package:buthings/repositories/order_repository.dart';
 import 'package:buthings/repositories/user_repository.dart';
@@ -15,6 +16,9 @@ class App extends StatelessWidget {
       providers: [
         Provider<IAuthenticationService>(
           create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        ChangeNotifierProvider<ProductProvider>(
+          create: (context) => ProductProvider(),
         ),
         ChangeNotifierProvider<UserProvider>(
           create: (context) => UserProvider(),

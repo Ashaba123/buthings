@@ -1,6 +1,7 @@
 import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/provider/user_provider.dart';
 import 'package:buthings/repositories/user_repository.dart';
+import 'package:buthings/screens/admin/admin_add_product.dart';
 import 'package:buthings/screens/admin/admin_dashbord.dart';
 import 'package:buthings/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,7 +42,7 @@ class _RoleCheckerState extends State<RoleChecker> {
             if (snapshot.data!['role'] == 'client') {
               return HomeScreen();
             } else {
-              return AdminDashboard();
+              return AdminAddProduct();
             }
           });
     }

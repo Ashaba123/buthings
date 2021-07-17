@@ -1,4 +1,3 @@
-import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/components/already_have_account_check.dart';
 import 'package:buthings/components/login_background.dart';
 import 'package:buthings/components/rounded_button.dart';
