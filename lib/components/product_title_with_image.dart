@@ -1,17 +1,22 @@
 import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductTitleWithImage extends StatelessWidget {
-  const ProductTitleWithImage({
+  ProductTitleWithImage({
     Key? key,
     required this.product,
   }) : super(key: key);
 
   final Product? product;
+  final List<String>? imageList = [];
 
   @override
   Widget build(BuildContext context) {
+    //add images to list
+    imageList!.addAll(product!.images!);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
@@ -46,16 +51,27 @@ class ProductTitleWithImage extends StatelessWidget {
                   ),
                 ]),
               ),
-              SizedBox(
-                width: kDefaultPadding,
-              ),
+              SizedBox(width: kDefaultPadding),
               Expanded(
-                child: Image.asset(
-                  product!.image!,
-                  fit: BoxFit.fill,
-                  width: double.infinity,
+                  child: Container(
+                height: 200,
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                      autoPlay: true,
+                      enableInfiniteScroll: false,
+                      enlargeCenterPage: true),
+                  items: imageList!
+                      .map((image) => ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Image.asset(
+                              image,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                            ),
+                          ))
+                      .toList(),
                 ),
-              )
+              )),
             ],
           )
         ],

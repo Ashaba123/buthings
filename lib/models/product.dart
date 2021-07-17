@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Product {
-  final String? image, title, description;
+  final String? title, description;
+  final String? image;
+  final List<String>? images;
   final int? price, id;
   final Color? color;
 
   Product({
     this.image,
+    this.images,
     this.title,
     this.description,
     this.price,
@@ -18,6 +21,8 @@ class Product {
       : this(
           id: json['id']! as int,
           title: json['title']! as String,
+          image: json['image'] as String,
+          images: json['images'] as List<String>,
           description: json['description']! as String,
           color: json['color']! as Color,
           price: json['price']! as int,
@@ -38,6 +43,11 @@ List<Product> products = [
   Product(
     id: 1,
     image: "assets/images/butterflies.png",
+    images: [
+      "assets/images/butterflies.png",
+      "assets/images/butterflies.png",
+      "assets/images/butterflies.png"
+    ],
     title: "ButterFlies",
     description:
         "12 PC's of 3D Double Layer Butterflies. Wall Stickers Home Decor."
@@ -48,6 +58,7 @@ List<Product> products = [
   Product(
     id: 2,
     image: "assets/images/books.png",
+    images: ["assets/images/books.png"],
     title: "Books",
     description:
         "Disney Set of 12 stories collection in Hardcover mini Storybooks Library."
@@ -58,6 +69,7 @@ List<Product> products = [
   Product(
     id: 3,
     image: "assets/images/african.png",
+    images: ["assets/images/african.png"],
     title: "African Print",
     description: dummyText,
     price: 45000,
@@ -66,6 +78,7 @@ List<Product> products = [
   Product(
     id: 4,
     image: "assets/images/dresses.png",
+    images: ["assets/images/dresses.png"],
     title: "Kids Clothes",
     description: dummyText,
     price: 35000,
@@ -74,6 +87,7 @@ List<Product> products = [
   Product(
     id: 5,
     image: "assets/images/plants.png",
+    images: ["assets/images/plants.png"],
     title: "Potted Herbs",
     description: "Potted Herbs suitable for urban places. @ 20,000/= "
         "Herbs add a blast of flavor to any meal. Everyone needs fresh ones at any time",
@@ -83,6 +97,7 @@ List<Product> products = [
   Product(
     id: 6,
     image: "assets/images/stars.png",
+    images: ["assets/images/stars.png"],
     title: "Luminous Stars",
     description: "100 Pcs Home Glow in the Dark 3D Stars wall Stickers."
         " DIY decor with paper glue for Kids and baby bedrooms.",
@@ -92,6 +107,7 @@ List<Product> products = [
   Product(
     id: 6,
     image: "assets/images/letters.png",
+    images: ["assets/images/letters.png"],
     title: "Alphabet Letters",
     description:
         "26 Pcs Glow in the Dark Luminous Alphabet Letters  word decor Art for Kids learning and Decor.",

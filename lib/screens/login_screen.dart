@@ -39,6 +39,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.03),
                 RoundedInputField(
+                  icon: Icons.email,
+                  textInputAction: TextInputAction.next,
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Enter your Email";

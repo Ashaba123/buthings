@@ -11,7 +11,7 @@ import 'package:rating_dialog/rating_dialog.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Product? product;
-  const DetailsScreen({Key? key, this.product}) : super(key: key);
+  DetailsScreen({Key? key, this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class DetailsScreen extends StatelessWidget {
                       left: kDefaultPadding,
                       right: kDefaultPadding,
                     ),
-                    //height: 500,
+                    height: 500,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(

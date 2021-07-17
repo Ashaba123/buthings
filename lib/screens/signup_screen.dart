@@ -40,6 +40,8 @@ class SignUpScreen extends StatelessWidget {
                   height: size.height * 0.35,
                 ),
                 RoundedInputField(
+                  icon: Icons.email,
+                  textInputAction: TextInputAction.next,
                   hintText: "Your Email",
                   validator: (val) {
                     if (val!.isEmpty) {
