@@ -1,12 +1,21 @@
+import 'package:buthings/models/order.dart';
+import 'package:buthings/models/rating.dart';
+
 class Product {
   final String? id;
   final String? title, description;
   final String? image;
+  final String? createdBy;
+  final List<Order>? orders;
+  final List<Rating>? ratings;
   final List<MyImage>? images;
   final int? price;
 
   Product({
     this.image,
+    this.createdBy,
+    this.orders,
+    this.ratings,
     this.images,
     this.title,
     this.description,
@@ -19,6 +28,9 @@ class Product {
           id: json['id']! as String,
           title: json['title']! as String,
           image: json['image'] as String,
+          createdBy: json['createdBy'] as String,
+          orders: json['orders'] as List<Order>,
+          ratings: json['ratings'] as List<Rating>,
           images: json['images'] as List<MyImage>,
           description: json['description']! as String,
           price: json['price']! as int,
@@ -29,6 +41,9 @@ class Product {
       'id': id,
       'title': title,
       'image': image,
+      'createdBy': createdBy,
+      'orders': orders!.map((order) => order.toJson()).toList(),
+      'ratings': ratings!.map((rating) => rating.toJson()).toList(),
       'images': images!.map((image) => image.imagetoJson()).toList(),
       'description': description,
       'price': price,

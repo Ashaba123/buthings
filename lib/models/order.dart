@@ -18,7 +18,7 @@ class Order {
     return {
       'id': id,
       'product': product,
-      'user': user,
+      'user': user!.toJson(),
     };
   }
 }

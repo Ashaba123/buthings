@@ -1,12 +1,20 @@
-
 import 'package:buthings/models/product.dart';
 import 'package:buthings/repositories/product_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductProvider extends ChangeNotifier {
-  final productRepo = ProductRepository();
+  final _productRepo = ProductRepository();
 
-  Future createProduct(String uid, Product? product) {
-    return productRepo.createProduct(uid,product);
+  Future createProduct(Product? product) {
+    return _productRepo.createProduct(product);
+  }
+
+  Product? getProduct(String name) {
+    return _productRepo.getProduct(name);
+  }
+
+  Future<List<QueryDocumentSnapshot<Product>>> getAllProducts() {
+    return _productRepo.getAllProducts();
   }
 }

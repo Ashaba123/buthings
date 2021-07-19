@@ -5,6 +5,7 @@ import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
 import 'package:buthings/provider/product_provider.dart';
+import 'package:buthings/screens/admin/admin_products_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,6 +27,7 @@ class _AdminAddProductState extends State<AdminAddProduct> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final priceController = TextEditingController();
+  bool isSaved = false;
 
   @override
   void dispose() {
@@ -128,29 +130,35 @@ class _AdminAddProductState extends State<AdminAddProduct> {
                 ),
                 RoundedButton(
                   text: 'SAVE',
-                  press: () {
-                    if (formKey.currentState!.validate()) {
-                      final user =
-                          context.read<IAuthenticationService>().currentUser();
+                  press: (isSaved)
+                      ? null
+                      : () {
+                          if (formKey.currentState!.validate()) {
+                            final user = context
+                                .read<IAuthenticationService>()
+                                .currentUser();
 
-                      //firebase storage store image
+                            //firebase storage store image
 
-                      String pic = (_image == null) ? "no pic" : _image!.path;
-                      List<MyImage>? imagesList = [];
-                      imagesList.add(MyImage(pic));
+                            String pic =
+                                (_image == null) ? "no pic" : _image!.path;
+                            List<MyImage>? imagesList = [];
+                            imagesList.add(MyImage(pic));
 
-                      final product = Product(
-                        id: uuid.v1(),
-                        title: nameController.text,
-                        description: descriptionController.text,
-                        price: int.parse(priceController.text),
-                        image: pic,
-                        images: imagesList,
-                      );
-
-                      _saveProduct(user!.uid, product);
-                    }
-                  },
+                            final product = Product(
+                              id: uuid.v1(),
+                              createdBy: user!.email,
+                              orders: [],
+                              ratings: [],
+                              title: nameController.text,
+                              description: descriptionController.text,
+                              price: int.parse(priceController.text),
+                              image: pic,
+                              images: imagesList,
+                            );
+                            _saveProduct(product);
+                          }
+                        },
                 )
               ],
             ),
@@ -210,8 +218,11 @@ class _AdminAddProductState extends State<AdminAddProduct> {
         });
   }
 
-  void _saveProduct(String uid, Product product) {
-    Provider.of<ProductProvider>(context, listen: false)
-        .createProduct(uid, product);
+  void _saveProduct(Product product) {
+    Provider.of<ProductProvider>(context, listen: false).createProduct(product);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Successfully Saved")));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => AdminProductsScreen()));
   }
 }
