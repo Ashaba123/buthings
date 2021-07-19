@@ -2,13 +2,13 @@ import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/signup_background.dart';
 import 'package:buthings/constants.dart';
-import 'package:buthings/models/product.dart';
 import 'package:buthings/screens/thank_you_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class CartScreen extends StatefulWidget {
-  final Product? product;
+  final QueryDocumentSnapshot? product;
   const CartScreen({Key? key, @required this.product}) : super(key: key);
 
   @override

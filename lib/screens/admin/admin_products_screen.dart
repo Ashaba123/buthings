@@ -12,6 +12,11 @@ class AdminProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final products = context.read<ProductProvider>().getAllProducts();
     return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: FutureBuilder<List<QueryDocumentSnapshot<Product>>>(
         future: products,
         builder: (context, snapshot) {

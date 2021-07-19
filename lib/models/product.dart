@@ -56,8 +56,8 @@ class MyImage {
 
   MyImage(this.image);
 
-  Map<String?, dynamic> imagetoJson() {
-    return {'image': image};
+  String? imagetoJson() {
+    return image!;
   }
 }
 

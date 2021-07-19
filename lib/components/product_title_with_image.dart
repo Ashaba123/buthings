@@ -1,6 +1,6 @@
 import 'package:buthings/constants.dart';
-import 'package:buthings/models/product.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,13 +10,13 @@ class ProductTitleWithImage extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final Product? product;
-  final List<MyImage>? imageList = [];
+  final QueryDocumentSnapshot? product;
+  final List<dynamic>? imageList = [];
 
   @override
   Widget build(BuildContext context) {
     //add images to list
-    imageList!.addAll(product!.images!);
+    imageList!.addAll(product!.get('images')!);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
@@ -27,7 +27,7 @@ class ProductTitleWithImage extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           Text(
-            product!.title!,
+            product!.get('title')!,
             style: Theme.of(context).textTheme.headline4!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class ProductTitleWithImage extends StatelessWidget {
                 text: TextSpan(children: [
                   TextSpan(text: "Price\n"),
                   TextSpan(
-                    text: "UGX ${product!.price}",
+                    text: "UGX ${product!.get('price')}",
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
@@ -63,8 +63,8 @@ class ProductTitleWithImage extends StatelessWidget {
                   items: imageList!
                       .map((image) => ClipRRect(
                             borderRadius: BorderRadius.circular(6),
-                            child: Image.asset(
-                              image.image!,
+                            child: Image.network(
+                              image!,
                               fit: BoxFit.fill,
                               width: double.infinity,
                             ),

@@ -4,13 +4,13 @@ import 'package:buthings/components/color_dot.dart';
 import 'package:buthings/components/description.dart';
 import 'package:buthings/components/product_title_with_image.dart';
 import 'package:buthings/constants.dart';
-import 'package:buthings/models/product.dart';
 import 'package:buthings/screens/cart_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final Product? product;
+  final QueryDocumentSnapshot? product;
   DetailsScreen({Key? key, this.product}) : super(key: key);
 
   @override

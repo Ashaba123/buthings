@@ -1,9 +1,9 @@
 import 'package:buthings/constants.dart';
-import 'package:buthings/models/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
-  final Product? product;
+  final QueryDocumentSnapshot? product;
   final Function()? press;
   const ItemCard({
     Key? key,
@@ -28,8 +28,8 @@ class ItemCard extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Image.asset(
-                product!.image!,
+              child: Image.network(
+                product!.get('image')!,
                 height: 140,
                 width: 140,
               ),
@@ -39,7 +39,7 @@ class ItemCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: kDefaultPadding / 4, vertical: kDefaultPadding / 4),
             child: Text(
-              product!.title!,
+              product!.get('title'),
               style: TextStyle(color: kPrimaryColor),
             ),
           ),
@@ -47,7 +47,7 @@ class ItemCard extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: kDefaultPadding / 4),
             child: Text(
-              "UGX ${product!.price}",
+              "UGX ${product!.get('price')}",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           )

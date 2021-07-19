@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/constants.dart';
@@ -41,10 +42,22 @@ class _AdminAddProductState extends State<AdminAddProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text("Create A Product"),
+        title: Text("Add a Product"),
+        actions: [
+          IconButton(
+              tooltip: "Sign Out",
+              onPressed: () {
+                context.read<IAuthenticationService>().signOut();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AuthenticationChecker()));
+              },
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              )),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -140,8 +153,9 @@ class _AdminAddProductState extends State<AdminAddProduct> {
 
                             //firebase storage store image
 
-                            String pic =
-                                (_image == null) ? "no pic" : _image!.path;
+                            String pic = (_image == null)
+                                ? "assets/images/logo.png"
+                                : _image!.path;
                             List<MyImage>? imagesList = [];
                             imagesList.add(MyImage(pic));
 

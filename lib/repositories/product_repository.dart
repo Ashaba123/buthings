@@ -33,7 +33,8 @@ class ProductRepository extends IProductRepository {
 
   @override
   Future createProduct(Product? product) async {
-    return await productsRef.doc(product!.id).set(product);
+    var options = SetOptions(merge: true);
+    return await productsRef.doc(product!.id).set(product, options);
   }
 
   @override

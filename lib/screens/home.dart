@@ -2,8 +2,10 @@ import 'package:buthings/components/item_card.dart';
 import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
 import 'package:buthings/authentication_checker.dart';
+import 'package:buthings/provider/product_provider.dart';
 import 'package:buthings/screens/details_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final products = context.read<ProductProvider>().getAllProducts();
     return Scaffold(
       appBar: buildAppBar(context),
       body: SafeArea(
@@ -34,30 +37,42 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding, vertical: kDefaultPadding),
-                child: GridView.builder(
-                  itemCount: products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: kDefaultPadding,
-                    mainAxisSpacing: kDefaultPadding,
-                    childAspectRatio: 0.75,
+            FutureBuilder<List<QueryDocumentSnapshot<Product>>>(
+              future: products,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return Center(child: Text("Error, Try Again"));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding, vertical: kDefaultPadding),
+                    child: GridView.builder(
+                      itemCount: snapshot.data!.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: kDefaultPadding,
+                        mainAxisSpacing: kDefaultPadding,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemBuilder: (context, index) => ItemCard(
+                          product: snapshot.data![index],
+                          press: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsScreen(
+                                    product: snapshot.data![index],
+                                  ),
+                                ),
+                              )),
+                    ),
                   ),
-                  itemBuilder: (context, index) => ItemCard(
-                      product: products[index],
-                      press: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsScreen(
-                                product: products[index],
-                              ),
-                            ),
-                          )),
-                ),
-              ),
+                );
+              },
             ),
           ],
         ),
