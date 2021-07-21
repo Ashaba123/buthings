@@ -1,7 +1,5 @@
 import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/provider/user_provider.dart';
-import 'package:buthings/repositories/user_repository.dart';
-import 'package:buthings/screens/admin/admin_add_product.dart';
 import 'package:buthings/screens/admin/admin_dashbord.dart';
 import 'package:buthings/screens/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RoleChecker extends StatefulWidget {
-  User? user;
+  final User? user;
   RoleChecker({this.user});
 
   @override
@@ -24,7 +22,7 @@ class _RoleCheckerState extends State<RoleChecker> {
       return AuthenticationChecker();
     } else {
       final _usersStream =
-          Provider.of<UserProvider>(context).getAllUsers(widget.user!.uid);
+          Provider.of<UserProvider>(context).getUsers(widget.user!.uid);
       return StreamBuilder<DocumentSnapshot>(
           stream: _usersStream,
           builder: (context, snapshot) {
@@ -42,7 +40,7 @@ class _RoleCheckerState extends State<RoleChecker> {
             if (snapshot.data!['role'] == 'client') {
               return HomeScreen();
             } else {
-              return AdminAddProduct();
+              return AdminDashboard();
             }
           });
     }

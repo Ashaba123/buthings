@@ -2,23 +2,28 @@ import 'package:buthings/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class IRatingRepository {
-  Stream<List<Rating>> getAllRatings();
-  createRating(int id);
+  Stream<List<QueryDocumentSnapshot>> getAllRatings();
+  createRating(Rating rating);
   updateRating(int id);
   deleteRating(int id);
+  Future<int> countRatings();
 }
 
 class RatingRepository extends IRatingRepository {
-  FirebaseFirestore db = FirebaseFirestore.instance;
+  final db = FirebaseFirestore.instance
+      .collection('ratings')
+      .withConverter<Rating>(
+          fromFirestore: (snapshot, _) => Rating.fromJson(snapshot.data()!),
+          toFirestore: (rating, _) => rating.toJson());
+
   @override
-  Stream<List<Rating>> getAllRatings() {
-    return db.collection("categories").snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Rating.fromJson(doc.data())).toList());
+  Stream<List<QueryDocumentSnapshot>> getAllRatings() {
+    return db.get().then((value) => value.docs).asStream();
   }
 
   @override
-  createRating(int id) {
-    throw UnimplementedError();
+  createRating(Rating rating) async {
+    return await db.doc(rating.id.toString()).set(rating);
   }
 
   @override
@@ -29,5 +34,11 @@ class RatingRepository extends IRatingRepository {
   @override
   updateRating(int id) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<int> countRatings() async {
+    QuerySnapshot q = await db.get();
+    return q.docs.length;
   }
 }

@@ -2,11 +2,12 @@ import 'package:buthings/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class IProductRepository {
-  Future<List<QueryDocumentSnapshot<Product>>> getAllProducts();
+  Stream<List<QueryDocumentSnapshot<Product>>> getAllProducts();
   Product? getProduct(String name);
   Future createProduct(Product? product);
   Future updateProduct(int id);
   Future deleteProduct(int id);
+  Future<int> countProducts();
 }
 
 class ProductRepository extends IProductRepository {
@@ -17,8 +18,12 @@ class ProductRepository extends IProductRepository {
           );
 
   @override
-  Future<List<QueryDocumentSnapshot<Product>>> getAllProducts() {
-    return productsRef.get().then((snapshot) => snapshot.docs);
+  Stream<List<QueryDocumentSnapshot<Product>>> getAllProducts() {
+    return productsRef
+        .where('isActive', isEqualTo: true)
+        .get()
+        .then((snapshot) => snapshot.docs)
+        .asStream();
   }
 
   @override
@@ -45,5 +50,11 @@ class ProductRepository extends IProductRepository {
   @override
   Future updateProduct(int id) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<int> countProducts() async {
+    QuerySnapshot q = await productsRef.get();
+    return q.docs.length;
   }
 }

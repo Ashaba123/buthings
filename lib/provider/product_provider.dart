@@ -14,7 +14,11 @@ class ProductProvider extends ChangeNotifier {
     return _productRepo.getProduct(name);
   }
 
-  Future<List<QueryDocumentSnapshot<Product>>> getAllProducts() {
+  Stream<List<QueryDocumentSnapshot<Product>>> getAllProducts() {
     return _productRepo.getAllProducts();
+  }
+
+  Future<int> countProducts() {
+    return _productRepo.countProducts();
   }
 }

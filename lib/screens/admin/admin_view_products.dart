@@ -1,24 +1,22 @@
 import 'package:buthings/models/product.dart';
 import 'package:buthings/provider/product_provider.dart';
+import 'package:buthings/screens/admin/admin_add_product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AdminProductsScreen extends StatelessWidget {
-  const AdminProductsScreen({Key? key}) : super(key: key);
+class AdminViewProducts extends StatelessWidget {
+  const AdminViewProducts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final products = context.read<ProductProvider>().getAllProducts();
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => Navigator.pop(context),
-        ),
+        title: Text('Products'),
       ),
-      body: FutureBuilder<List<QueryDocumentSnapshot<Product>>>(
-        future: products,
+      body: StreamBuilder<List<QueryDocumentSnapshot<Product>>>(
+        stream: products,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text("Error"));
@@ -35,10 +33,18 @@ class AdminProductsScreen extends StatelessWidget {
                   leading: Image.network(data.get('image')),
                   title: Text(data.get('title')),
                   subtitle: Text("UGX ${data.get('price')}"),
-                  trailing: Text(data.get('orders').toString()),
+                  trailing: Text('Stock: ${data.get('stock')}'),
                 );
               });
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AdminAddProduct())),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

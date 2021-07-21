@@ -7,15 +7,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class CartScreen extends StatefulWidget {
+class AddressScreen extends StatefulWidget {
   final QueryDocumentSnapshot? product;
-  const CartScreen({Key? key, @required this.product}) : super(key: key);
+  const AddressScreen({Key? key, @required this.product}) : super(key: key);
 
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _AddressScreenState createState() => _AddressScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _AddressScreenState extends State<AddressScreen> {
   final phoneController = TextEditingController();
   final addressController = TextEditingController();
   final formKey = GlobalKey<FormState>();

@@ -1,16 +1,26 @@
+import 'dart:math';
 import 'package:buthings/constants.dart';
-import 'package:buthings/screens/cart_screen.dart';
+import 'package:buthings/models/order.dart';
+import 'package:buthings/models/rating.dart';
+import 'package:buthings/provider/order_provider.dart';
+import 'package:buthings/provider/ratings_provider.dart';
+import 'package:buthings/screens/order_screen.dart';
+import 'package:buthings/services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddToCart extends StatefulWidget {
   const AddToCart({
     Key? key,
     required this.product,
+    this.quantity,
   }) : super(key: key);
 
   final QueryDocumentSnapshot? product;
+  final int? quantity;
 
   @override
   _AddToCartState createState() => _AddToCartState();
@@ -27,8 +37,8 @@ class _AddToCartState extends State<AddToCart> {
       // your app's logo?
       image: Image.asset(
         "assets/images/logo.png",
-        height: 100,
-        width: 100,
+        height: 50,
+        width: 50,
       ),
       submitButton: 'Submit',
       onCancelled: () => print('cancelled'),
@@ -39,8 +49,10 @@ class _AddToCartState extends State<AddToCart> {
           // send their comments to your email or anywhere you wish
           // ask the user to contact you instead of leaving a bad review
           print('Store rating of product to firebase');
+          _addUserRating(widget.product!, response);
         } else {
           print('Store rating of product to firebase');
+          _addUserRating(widget.product!, response);
         }
       },
     );
@@ -77,31 +89,112 @@ class _AddToCartState extends State<AddToCart> {
         Expanded(
           child: Container(
             height: 50,
-            child: TextButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18))),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.purpleAccent)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CartScreen(
-                              product: widget.product,
-                            )));
-              },
-              child: Text(
-                "BUY NOW",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
+            child: StreamBuilder<List<QueryDocumentSnapshot>>(
+                stream: context
+                    .read<OrderProvider>()
+                    .getOneOrder(widget.product!.get('title')),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return TextButton(
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18))),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.purpleAccent)),
+                      onPressed: null,
+                      child: Text(
+                        "Error",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.length > 0) {
+                      return TextButton(
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18))),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.purpleAccent)),
+                        onPressed: null,
+                        child: Text(
+                          "Already in Your Cart",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    } else {
+                      return TextButton(
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18))),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.purpleAccent)),
+                        onPressed: () {
+                          _addOrder(context);
+                        },
+                        child: Text(
+                          "BUY NOW",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    }
+                  }
+                  return Container();
+                }),
           ),
         )
       ]),
     );
+  }
+
+  void _addUserRating(
+      QueryDocumentSnapshot product, RatingDialogResponse response) {
+    final userEmail =
+        context.read<IAuthenticationService>().currentUser()!.email;
+    final rating = Rating(
+        id: Uuid().v1(),
+        product: product.get('title'),
+        user: userEmail,
+        rating: response.rating,
+        comment: response.comment);
+    context.read<RatingsProvider>().createRating(rating);
+  }
+
+  void _addOrder(BuildContext context) {
+    final user = context.read<IAuthenticationService>().currentUser()!.email;
+    String orderNo = 'B${Random().nextInt(1000)}';
+    print(orderNo);
+
+    final order = Order(
+        id: Uuid().v4(),
+        orderNo: orderNo,
+        product: widget.product!.get('title'),
+        userEmail: user,
+        quantity: widget.quantity,
+        price: widget.product!.get('price'),
+        total: 0,
+        address: '',
+        phone: '',
+        status: '');
+
+    context.read<OrderProvider>().createOrder(order);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OrdersScreen(
+                  product: widget.product,
+                )));
   }
 }

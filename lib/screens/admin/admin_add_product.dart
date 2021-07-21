@@ -6,12 +6,13 @@ import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
 import 'package:buthings/provider/product_provider.dart';
-import 'package:buthings/screens/admin/admin_products_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+
+import 'admin_view_products.dart';
 
 class AdminAddProduct extends StatefulWidget {
   AdminAddProduct({Key? key}) : super(key: key);
@@ -236,7 +237,7 @@ class _AdminAddProductState extends State<AdminAddProduct> {
     Provider.of<ProductProvider>(context, listen: false).createProduct(product);
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("Successfully Saved")));
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => AdminProductsScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AdminViewProducts()));
   }
 }
