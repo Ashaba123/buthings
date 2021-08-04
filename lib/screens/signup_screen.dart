@@ -4,19 +4,33 @@ import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/rounded_password_field.dart';
 import 'package:buthings/components/signup_background.dart';
 import 'package:buthings/constants.dart';
-import 'package:buthings/models/user.dart';
-import 'package:buthings/repositories/user_repository.dart';
-import 'package:buthings/role_checker.dart';
 import 'package:buthings/screens/home.dart';
 import 'package:buthings/screens/login_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SignUpScreen extends StatelessWidget {
-  final formkey = GlobalKey<FormState>();
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final formKey = GlobalKey<FormState>();
+
+  final nameController = TextEditingController();
+
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +39,7 @@ class SignUpScreen extends StatelessWidget {
       body: SignUpBackground(
         child: SingleChildScrollView(
           child: Form(
-            key: formkey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -38,6 +52,18 @@ class SignUpScreen extends StatelessWidget {
                 Image.asset(
                   "assets/icons/signup.png",
                   height: size.height * 0.35,
+                ),
+                RoundedInputField(
+                  icon: Icons.person,
+                  textInputAction: TextInputAction.next,
+                  hintText: "Your Username",
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return "Enter your Username";
+                    }
+                    return null;
+                  },
+                  controller: nameController,
                 ),
                 RoundedInputField(
                   icon: Icons.email,
@@ -66,7 +92,7 @@ class SignUpScreen extends StatelessWidget {
                 RoundedButton(
                   text: "SIGNUP",
                   press: () {
-                    if (formkey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       context.read<IAuthenticationService>().signUp(
                           email: emailController.text,
                           password: passwordController.text);
