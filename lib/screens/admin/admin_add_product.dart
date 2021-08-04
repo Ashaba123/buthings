@@ -7,11 +7,11 @@ import 'package:buthings/constants.dart';
 import 'package:buthings/models/product.dart';
 import 'package:buthings/provider/product_provider.dart';
 import 'package:buthings/services/authentication_service.dart';
+import 'package:buthings/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
 import 'admin_view_products.dart';
 
 class AdminAddProduct extends StatefulWidget {
@@ -28,11 +28,12 @@ class _AdminAddProductState extends State<AdminAddProduct> {
   var uuid = Uuid();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
+  final stockController = TextEditingController();
   final priceController = TextEditingController();
-  bool isSaved = false;
 
   @override
   void dispose() {
+    stockController.dispose();
     nameController.dispose();
     descriptionController.dispose();
     priceController.dispose();
@@ -140,40 +141,58 @@ class _AdminAddProductState extends State<AdminAddProduct> {
                   controller: priceController,
                   icon: Icons.edit,
                   hintText: 'Enter price',
+                  textInputAction: TextInputAction.next,
+                ),
+                RoundedInputField(
+                  keyboardType: TextInputType.number,
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return 'Enter Current Stock';
+                    }
+                    return null;
+                  },
+                  controller: stockController,
+                  icon: Icons.edit,
+                  hintText: 'Enter Current Stock',
                   textInputAction: TextInputAction.done,
                 ),
                 RoundedButton(
                   text: 'SAVE',
-                  press: (isSaved)
-                      ? null
-                      : () {
-                          if (formKey.currentState!.validate()) {
-                            final user = context
-                                .read<IAuthenticationService>()
-                                .currentUser();
+                  press: () async {
+                    if (formKey.currentState!.validate()) {
+                      final user =
+                          context.read<IAuthenticationService>().currentUser();
 
-                            //firebase storage store image
+                      //firebase Cloud storage store image
+                      try {
+                        String pic = (_image == null)
+                            ? "assets/images/logo.png"
+                            : _image!.path;
 
-                            String pic = (_image == null)
-                                ? "assets/images/logo.png"
-                                : _image!.path;
-                            List<MyImage>? imagesList = [];
-                            imagesList.add(MyImage(pic));
+                        context.read<IStorageService>().uploadImage(pic);
+                        context.read<IStorageService>().uploadTask(_image!);
 
-                            final product = Product(
-                              id: uuid.v1(),
-                              createdBy: user!.email,
-                              orders: [],
-                              ratings: [],
-                              title: nameController.text,
-                              description: descriptionController.text,
-                              price: int.parse(priceController.text),
-                              image: pic,
-                              images: imagesList,
-                            );
-                            _saveProduct(product);
-                          }
-                        },
+                        //firestore image list
+                        List<MyImage>? imagesList = [];
+                        imagesList.add(MyImage(pic));
+
+                        _saveProduct(Product(
+                          id: uuid.v1(),
+                          createdBy: user!.email,
+                          orders: [],
+                          ratings: [],
+                          title: nameController.text,
+                          description: descriptionController.text,
+                          price: int.parse(priceController.text),
+                          image: pic,
+                          images: imagesList,
+                        ));
+                      } catch (e, trace) {
+                        print(trace.toString());
+                        print(e.toString());
+                      }
+                    }
+                  },
                 )
               ],
             ),

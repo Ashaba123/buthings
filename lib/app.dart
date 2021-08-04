@@ -6,7 +6,9 @@ import 'package:buthings/provider/ratings_provider.dart';
 import 'package:buthings/provider/user_provider.dart';
 import 'package:buthings/repositories/order_repository.dart';
 import 'package:buthings/services/authentication_service.dart';
+import 'package:buthings/services/storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +19,9 @@ class App extends StatelessWidget {
       providers: [
         Provider<IAuthenticationService>(
           create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        Provider<IStorageService>(
+          create: (_) => StorageService(FirebaseStorage.instance),
         ),
         ChangeNotifierProvider<OrderProvider>(
           create: (context) => OrderProvider(),
