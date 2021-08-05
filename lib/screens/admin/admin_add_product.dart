@@ -8,6 +8,7 @@ import 'package:buthings/models/product.dart';
 import 'package:buthings/provider/product_provider.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:buthings/services/storage_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class _AdminAddProductState extends State<AdminAddProduct> {
   final descriptionController = TextEditingController();
   final stockController = TextEditingController();
   final priceController = TextEditingController();
+  bool? saving = false;
 
   @override
   void dispose() {
@@ -158,41 +160,51 @@ class _AdminAddProductState extends State<AdminAddProduct> {
                 ),
                 RoundedButton(
                   text: 'SAVE',
-                  press: () async {
-                    if (formKey.currentState!.validate()) {
-                      final user =
-                          context.read<IAuthenticationService>().currentUser();
+                  press: (_image == null)
+                      ? null
+                      : () async {
+                          if (formKey.currentState!.validate()) {
+                            final user = context
+                                .read<IAuthenticationService>()
+                                .currentUser();
 
-                      //firebase Cloud storage store image
-                      try {
-                        String pic = (_image == null)
-                            ? "assets/images/logo.png"
-                            : _image!.path;
+                            //firebase Cloud storage store image
+                            try {
+                              String pic = (_image == null)
+                                  ? "assets/images/logo.png"
+                                  : _image!.path;
 
-                        context.read<IStorageService>().uploadImage(pic);
-                        context.read<IStorageService>().uploadTask(_image!);
+                              final snapshot = await context
+                                  .read<IStorageService>()
+                                  .uploadImage(_image!, pic);
 
-                        //firestore image list
-                        List<MyImage>? imagesList = [];
-                        imagesList.add(MyImage(pic));
+                              if (snapshot.state == TaskState.success) {
+                                //firestore image list
+                                final String downloadUrl =
+                                    await snapshot.ref.getDownloadURL();
 
-                        _saveProduct(Product(
-                          id: uuid.v1(),
-                          createdBy: user!.email,
-                          orders: [],
-                          ratings: [],
-                          title: nameController.text,
-                          description: descriptionController.text,
-                          price: int.parse(priceController.text),
-                          image: pic,
-                          images: imagesList,
-                        ));
-                      } catch (e, trace) {
-                        print(trace.toString());
-                        print(e.toString());
-                      }
-                    }
-                  },
+                                List<MyImage>? imagesList = [];
+                                imagesList.add(MyImage(downloadUrl));
+
+                                _saveProduct(Product(
+                                  id: uuid.v1(),
+                                  createdBy: user!.email,
+                                  orders: [],
+                                  ratings: [],
+                                  title: nameController.text,
+                                  description: descriptionController.text,
+                                  price: int.parse(priceController.text),
+                                  stock: int.parse(stockController.text),
+                                  image: downloadUrl,
+                                  images: imagesList,
+                                ));
+                              }
+                            } catch (e, trace) {
+                              print(trace.toString());
+                              print('product error:$e');
+                            }
+                          }
+                        },
                 )
               ],
             ),

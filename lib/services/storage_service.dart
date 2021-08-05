@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class IStorageService {
-  void uploadImage(String filename);
-  void uploadTask(File file);
+  Future<TaskSnapshot> uploadImage(File file, String filename);
 }
 
 class StorageService extends IStorageService {
@@ -13,13 +12,7 @@ class StorageService extends IStorageService {
   StorageService(this._storage);
 
   @override
-  void uploadImage(String filename) {
-    _storage.ref().child('uploads/$filename');
-  }
-
-  @override
-  void uploadTask(File file) {
-    final uploadTask = _storage.ref().putFile(file);
-    uploadTask.whenComplete(() => print('complete'));
+  Future<TaskSnapshot> uploadImage(File file, String filename) async {
+    return await _storage.ref().child('$filename').putFile(file);
   }
 }
