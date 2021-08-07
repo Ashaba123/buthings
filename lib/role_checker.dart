@@ -22,7 +22,7 @@ class _RoleCheckerState extends State<RoleChecker> {
       return AuthenticationChecker();
     } else {
       final _usersStream =
-          Provider.of<UserProvider>(context).getUsers(widget.user!.uid);
+          Provider.of<UserProvider>(context).getUser(widget.user!.uid);
       return StreamBuilder<DocumentSnapshot>(
           stream: _usersStream,
           builder: (context, snapshot) {

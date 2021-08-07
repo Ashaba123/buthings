@@ -42,7 +42,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         value: 1,
                         child: Center(
                           child: Text(
-                              "${context.read<IAuthenticationService>().currentUser()!.email ?? "Hello!"}"),
+                              "Welcome! ${context.read<IAuthenticationService>().currentUser()!.email}"),
                         ),
                       ),
                       PopupMenuDivider(),

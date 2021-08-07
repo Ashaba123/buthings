@@ -94,6 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   press: () {
                     if (formKey.currentState!.validate()) {
                       context.read<IAuthenticationService>().signUp(
+                          name: nameController.text,
                           email: emailController.text,
                           password: passwordController.text);
                       Navigator.pushReplacement(
@@ -123,34 +124,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     );
                   },
-                ),
-                Divider(),
-                InkWell(
-                  onTap: () {
-                    //google sign in
-                  },
-                  child: Card(
-                    child: Ink(
-                      color: Colors.grey[100],
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/icons/google.png",
-                              height: size.height * 0.03,
-                            ),
-                            SizedBox(width: 12),
-                            Text(
-                              'Sign in with Google',
-                              style: TextStyle(color: kPrimaryColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
                 SizedBox(height: 40),
               ],

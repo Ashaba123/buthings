@@ -1,15 +1,24 @@
+import 'dart:math';
+
 import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/signup_background.dart';
 import 'package:buthings/constants.dart';
+import 'package:buthings/models/order.dart';
+import 'package:buthings/provider/order_provider.dart';
 import 'package:buthings/screens/thank_you_screen.dart';
+import 'package:buthings/services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 class AddressScreen extends StatefulWidget {
   final QueryDocumentSnapshot? product;
-  const AddressScreen({Key? key, @required this.product}) : super(key: key);
+  final int? quantity;
+  const AddressScreen(
+      {Key? key, required this.quantity, @required this.product})
+      : super(key: key);
 
   @override
   _AddressScreenState createState() => _AddressScreenState();
@@ -85,18 +94,10 @@ class _AddressScreenState extends State<AddressScreen> {
                   press: () {
                     if (formKey.currentState!.validate()) {
                       //create order
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return ThankYouScreen();
-                          },
-                        ),
-                      );
+                      _addOrder(context);
                     } else {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('Error')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Please enter all credentials')));
                     }
                   },
                 ),
@@ -106,5 +107,30 @@ class _AddressScreenState extends State<AddressScreen> {
         ),
       ),
     );
+  }
+
+  void _addOrder(BuildContext context) {
+    final user = context.read<IAuthenticationService>().currentUser()!.email;
+    String orderNo = 'B${Random().nextInt(1000)}';
+    print('orderNo: $orderNo');
+
+    int qty = (widget.quantity!);
+    int pr = (widget.product!.get('price'));
+    final priceTotal = (qty * pr);
+
+    final order = Order(
+        id: Uuid().v4(),
+        orderNo: orderNo,
+        product: widget.product!.get('title'),
+        userEmail: user,
+        quantity: widget.quantity,
+        price: widget.product!.get('price'),
+        total: priceTotal,
+        address: addressController.text,
+        phone: phoneController.text,
+        status: 'created');
+    context.read<OrderProvider>().createOrder(order);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ThankYouScreen()));
   }
 }

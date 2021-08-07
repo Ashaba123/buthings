@@ -4,7 +4,6 @@ import 'package:buthings/models/product.dart';
 import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/provider/product_provider.dart';
 import 'package:buthings/screens/details_screen.dart';
-import 'package:buthings/screens/order_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -101,24 +100,9 @@ class HomeScreen extends StatelessWidget {
                       value: 1,
                       child: Center(
                         child: Text(
-                            "${context.read<IAuthenticationService>().currentUser()!.email ?? "Hello!"}"),
+                            "Welcome! ${context.read<IAuthenticationService>().currentUser()!.email}"),
                       ),
                     ),
-                    PopupMenuDivider(),
-                    PopupMenuItem(
-                        value: 2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Icon(
-                              Icons.shopping_cart,
-                              color: kPrimaryColor,
-                            ),
-                            SizedBox(width: kDefaultPadding / 2),
-                            Text("My Orders")
-                          ],
-                        )),
                     PopupMenuDivider(),
                     PopupMenuItem(
                         value: 0,
@@ -145,10 +129,6 @@ class HomeScreen extends StatelessWidget {
       context.read<IAuthenticationService>().signOut();
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => AuthenticationChecker()));
-    }
-    if (item == 2) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => OrdersScreen()));
     }
   }
 }

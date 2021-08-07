@@ -2,7 +2,7 @@ import 'package:buthings/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class IUserRepository {
-  Stream<DocumentSnapshot> getUsers(String uid);
+  Stream<DocumentSnapshot> getUser(String uid);
   Stream<List<QueryDocumentSnapshot>> getAllUsers();
   Future<int> countUsers();
   Future createUser(MyUser user);
@@ -18,7 +18,7 @@ class UserRepository extends IUserRepository {
           toFirestore: (myUser, _) => myUser.toJson());
 
   @override
-  Stream<DocumentSnapshot<MyUser>> getUsers(String uid) {
+  Stream<DocumentSnapshot<MyUser>> getUser(String uid) {
     return _db.doc(uid).get().asStream();
   }
 

@@ -5,7 +5,6 @@ import 'package:buthings/constants.dart';
 import 'package:buthings/models/rating.dart';
 import 'package:buthings/provider/order_provider.dart';
 import 'package:buthings/provider/ratings_provider.dart';
-import 'package:buthings/screens/order_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -127,9 +126,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 buildOutlinedButton(
                                     icon: Icons.add,
                                     press: () {
-                                      setState(() {
-                                        numItems++;
-                                      });
+                                      if (numItems <
+                                          widget.product!.get('stock')) {
+                                        setState(() {
+                                          numItems++;
+                                        });
+                                      }
                                     }),
                               ],
                             ),
@@ -171,21 +173,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
           Navigator.pop(context);
         },
       ),
-      actions: [
-        IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OrdersScreen(
-                            product: widget.product,
-                          )));
-            },
-            icon: Icon(Icons.shopping_cart)),
-        SizedBox(
-          width: kDefaultPadding / 2,
-        )
-      ],
     );
   }
 

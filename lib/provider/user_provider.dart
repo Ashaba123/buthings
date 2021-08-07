@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 class UserProvider extends ChangeNotifier {
   final _userRepo = UserRepository();
 
-  Stream<DocumentSnapshot> getUsers(String uid) {
-    return _userRepo.getUsers(uid);
+  Stream<DocumentSnapshot> getUser(String uid) {
+    return _userRepo.getUser(uid);
   }
 
   Stream<List<QueryDocumentSnapshot>> getAllUsers() {

@@ -1,10 +1,7 @@
-import 'dart:math';
 import 'package:buthings/constants.dart';
-import 'package:buthings/models/order.dart';
 import 'package:buthings/models/rating.dart';
-import 'package:buthings/provider/order_provider.dart';
 import 'package:buthings/provider/ratings_provider.dart';
-import 'package:buthings/screens/order_screen.dart';
+import 'package:buthings/screens/address_screen.dart';
 import 'package:buthings/services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -89,70 +86,29 @@ class _AddToCartState extends State<AddToCart> {
         Expanded(
           child: Container(
             height: 50,
-            child: StreamBuilder<List<QueryDocumentSnapshot>>(
-                stream: context
-                    .read<OrderProvider>()
-                    .getOneOrder(widget.product!.get('title')),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return TextButton(
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18))),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.purpleAccent)),
-                      onPressed: null,
-                      child: Text(
-                        "Error",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.length > 0) {
-                      return TextButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18))),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.purpleAccent)),
-                        onPressed: null,
-                        child: Text(
-                          "Already in Your Cart",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    } else {
-                      return TextButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18))),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.purpleAccent)),
-                        onPressed: () {
-                          _addOrder(context);
-                        },
-                        child: Text(
-                          "BUY NOW",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    }
-                  }
-                  return Container();
-                }),
+            child: TextButton(
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18))),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.purpleAccent)),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddressScreen(
+                              quantity: widget.quantity,
+                              product: widget.product,
+                            )));
+              },
+              child: Text(
+                "BUY NOW",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         )
       ]),
@@ -170,31 +126,5 @@ class _AddToCartState extends State<AddToCart> {
         rating: response.rating,
         comment: response.comment);
     context.read<RatingsProvider>().createRating(rating);
-  }
-
-  void _addOrder(BuildContext context) {
-    final user = context.read<IAuthenticationService>().currentUser()!.email;
-    String orderNo = 'B${Random().nextInt(1000)}';
-    print(orderNo);
-
-    final order = Order(
-        id: Uuid().v4(),
-        orderNo: orderNo,
-        product: widget.product!.get('title'),
-        userEmail: user,
-        quantity: widget.quantity,
-        price: widget.product!.get('price'),
-        total: 0,
-        address: '',
-        phone: '',
-        status: '');
-
-    context.read<OrderProvider>().createOrder(order);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OrdersScreen(
-                  product: widget.product,
-                )));
   }
 }
