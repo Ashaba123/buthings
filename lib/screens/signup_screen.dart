@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: "SIGNUP",
                   press: () {
                     if (formKey.currentState!.validate()) {
-                      final user = context
+                      context
                           .read<IAuthenticationService>()
                           .signUp(
                               name: nameController.text,
