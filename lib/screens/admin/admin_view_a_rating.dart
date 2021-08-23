@@ -1,10 +1,6 @@
-import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/constants.dart';
-import 'package:buthings/provider/order_provider.dart';
-import 'package:buthings/screens/admin/admin_view_orders.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AdminViewRating extends StatelessWidget {
   final QueryDocumentSnapshot? rating;
