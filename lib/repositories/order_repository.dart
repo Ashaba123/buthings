@@ -6,7 +6,7 @@ abstract class IOrderRepository {
   Stream<List<QueryDocumentSnapshot>> getRecentOrders();
   Stream<List<QueryDocumentSnapshot>> getOneOrder(String id);
   Future createOrder(Order? order);
-  Future updateOrder(Order order);
+  Future updateOrder(String? id, String? status);
   Future deleteOrder(Order order);
   Future<int> countOrders();
 }
@@ -43,8 +43,8 @@ class OrderRepository extends IOrderRepository {
   }
 
   @override
-  Future updateOrder(Order order) {
-    throw UnimplementedError();
+  Future updateOrder(String? id, String? status) async {
+    return await _db.doc(id).update({'status': status});
   }
 
   @override

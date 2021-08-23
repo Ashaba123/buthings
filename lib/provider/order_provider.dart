@@ -10,6 +10,10 @@ class OrderProvider extends ChangeNotifier {
     return _orderRepo.createOrder(order);
   }
 
+  Future updateOrder(String? id, String? status) {
+    return _orderRepo.updateOrder(id, status);
+  }
+
   Stream<List<QueryDocumentSnapshot>> getAllOrders() {
     return _orderRepo.getAllOrders();
   }

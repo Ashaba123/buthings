@@ -3,7 +3,6 @@ import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/components/rounded_password_field.dart';
 import 'package:buthings/components/signup_background.dart';
-import 'package:buthings/constants.dart';
 import 'package:buthings/screens/home.dart';
 import 'package:buthings/screens/login_screen.dart';
 import 'package:buthings/services/authentication_service.dart';

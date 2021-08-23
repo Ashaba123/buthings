@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:buthings/authentication_checker.dart';
 import 'package:buthings/components/rounded_button.dart';
 import 'package:buthings/components/rounded_input_field.dart';
 import 'package:buthings/constants.dart';
@@ -47,21 +45,6 @@ class _AdminAddProductState extends State<AdminAddProduct> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add a Product"),
-        actions: [
-          IconButton(
-              tooltip: "Sign Out",
-              onPressed: () {
-                context.read<IAuthenticationService>().signOut();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AuthenticationChecker()));
-              },
-              icon: Icon(
-                Icons.logout,
-                color: Colors.white,
-              )),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

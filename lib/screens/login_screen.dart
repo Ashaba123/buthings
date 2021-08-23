@@ -10,10 +10,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  final formkey = GlobalKey<FormState>();
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
+
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +36,7 @@ class LoginScreen extends StatelessWidget {
       body: LoginBackground(
         child: SingleChildScrollView(
           child: Form(
-            key: formkey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -64,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                 RoundedButton(
                   text: "LOGIN",
                   press: () async {
-                    if (formkey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       User? user = await context
                           .read<IAuthenticationService>()
                           .signIn(
