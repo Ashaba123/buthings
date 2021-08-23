@@ -92,10 +92,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: "SIGNUP",
                   press: () {
                     if (formKey.currentState!.validate()) {
-                      context.read<IAuthenticationService>().signUp(
-                          name: nameController.text,
-                          email: emailController.text,
-                          password: passwordController.text);
+                      final user = context
+                          .read<IAuthenticationService>()
+                          .signUp(
+                              name: nameController.text,
+                              email: emailController.text,
+                              password: passwordController.text);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -104,9 +106,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                         ),
                       );
-                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error! Try Again')));
+                          SnackBar(content: Text('Welcome to Buthings')));
                     }
                   },
                 ),
