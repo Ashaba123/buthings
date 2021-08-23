@@ -27,7 +27,7 @@ class ThankYouScreen extends StatelessWidget {
             RoundedButton(
               text: "CONTINUE",
               press: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) {

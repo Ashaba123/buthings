@@ -130,7 +130,7 @@ class _AddressScreenState extends State<AddressScreen> {
         phone: phoneController.text,
         status: 'created');
     context.read<OrderProvider>().createOrder(order);
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => ThankYouScreen()));
   }
 }
